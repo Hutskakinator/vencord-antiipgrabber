@@ -104,16 +104,16 @@ function extractUrls(content: string): string[] {
     return urls;
 }
 
-function RickrollWarningAccessory({ message }: { message: Message }) {
+function WarningAccessory({ message }: { message: Message }) {
     const urls = extractUrls(message.content);
     if (urls.length === 0) return null;
 
     for (const url of urls) {
-        const isCustom = isCustomRickroll(url);
-        if (isPotentialRickroll(url) || isCustom) {
+        const isCustom = isCustom(url);
+        if (isPotential(url) || isCustom) {
             return (
                 <ErrorBoundary>
-                    <RickrollWarning message={message} isCustom={isCustom} />
+                    <Warning message={message} isCustom={isCustom} />
                 </ErrorBoundary>
             );
         }
@@ -122,7 +122,7 @@ function RickrollWarningAccessory({ message }: { message: Message }) {
     return null;
 }
 
-function isCustomRickroll(url: string): boolean {
+function isCustom(url: string): boolean {
     try {
         const parsedUrl = new URL(url);
         const customLinks = settings.store.customLinks
@@ -157,7 +157,7 @@ function isCustomRickroll(url: string): boolean {
     return false;
 }
 
-function RickrollWarning({
+function Warning({
     message,
     isCustom,
 }: {
@@ -171,8 +171,8 @@ function RickrollWarning({
             <Text color="text-danger" variant="text-xs/semibold">
                 ⚠️ This link is{" "}
                 {isCustom
-                    ? "matching one of your filters for rickrolls."
-                    : "a known rickroll."}
+                    ? "matching one of your filters for IP grabbers."
+                    : "a known IP grabber."}
             </Text>
         </div>
     );
@@ -181,8 +181,8 @@ function RickrollWarning({
 export default definePlugin({
     name: "AntiRickroll",
     description:
-        "Warns you of potential Rickrolls in messages, including masked links (supports custom rules)",
-    authors: [{ name: "ryanamay", id: 1262793452236570667n }],
+        "Warns you of potential IP grabbers in messages, including masked links (supports custom rules)",
+    authors: [{ name: "ryanamay", "purritoz" id: 1262793452236570667n, 1286030761002012673n, }],
     dependencies: ["MessageAccessoriesAPI", "UserSettingsAPI"],
 
     settings,
